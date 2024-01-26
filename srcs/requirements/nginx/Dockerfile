@@ -1,12 +1,16 @@
 FROM debian:bookworm
 
-RUN apt update && apt upgrade -y && apt install -y nginx
+RUN apt update && apt upgrade && apt install -y nginx openssl
 
-RUN mkdir -p /etc/nginx/ssl
+RUN mkdir /etc/nginx/ssl && \
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/htalhaou.42.fr.key \
+    -out /etc/nginx/ssl/htalhaou.42.fr.crt  \
+    -subj "/C=MA/L=Tetouan/O=42/OU=1337 MED/CN=htalhaou.42.fr"
 
-RUN apt install -y openssl && openssl req -x509 -nodes -out /etc/nginx/ssl/htalhaou.42.fr.crt -keyout /etc/nginx/ssl/htalhaou.42.fr.key -subj "/C=MA/ST=IDF/L=Tetouan/O=1337/OU=1337/CN=htalhaou.42.fr/UID=htalhaou" 
+COPY ./conf/nginx.conf /etc/nginx/conf.d/nginx.conf
 
-COPY ./conf/nginx.conf /etc/nginx/conf.d/
+COPY ./index.html /var/www/html/
 
 EXPOSE 443
 

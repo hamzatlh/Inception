@@ -4,10 +4,11 @@ FROM debian:bookworm
 RUN apt update && apt upgrade -y && apt install -y php8.2 \
     php8.2-fpm \
     php8.2-mysql \
-    mariadb-server \
-    nginx
+    mariadb-client \
+    nginx curl
 
-RUN apt update && apt upgrade -y && apt install -y curl
+RUN ln -s /usr/bin/php8.2 /usr/bin/php
+
 
 # Create the directory with correct ownership and permissions
 RUN mkdir -p /var/www/html/wordpress \
@@ -24,7 +25,7 @@ COPY ./tools/script.sh /script.sh
 RUN mkdir -p /run/php
 
 # Set the entry point
-ENTRYPOINT ["sh", "/script.sh"]
+ENTRYPOINT ["sh", "script.sh"]
 
 # Start PHP-FPM
 CMD ["/usr/sbin/php-fpm8.2", "-R", "-F"]

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ ! -f "/usr/local/bin/wp" ]; then
-    cd /tmp
-    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-    chmod +x wp-cli.phar
-    mv wp-cli.phar /usr/local/bin/wp
-fi
+# if [ ! -f "/usr/local/bin/wp" ]; then
+#     cd /tmp
+#     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+#     sudo chmod 777 wp-cli.phar
+#     sudo mv wp-cli.phar /usr/local/bin/wp
+# fi
 
 cd /var/www/html/wordpress
 rm -rf /var/www/html/wordpress/*

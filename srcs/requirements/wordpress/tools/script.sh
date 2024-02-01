@@ -1,11 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
-# if [ ! -f "/usr/local/bin/wp" ]; then
-#     cd /tmp
-#     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-#     sudo chmod 777 wp-cli.phar
-#     sudo mv wp-cli.phar /usr/local/bin/wp
-# fi
+if [ ! -d "/var/www/html/wordpress" ]; then
+    mkdir -p /var/www/html/wordpress
+fi
 
 cd /var/www/html/wordpress
 rm -rf /var/www/html/wordpress/*
@@ -17,5 +14,3 @@ wp config create --allow-root --dbname=${WP_DB_NAME} --dbuser=${WP_USER} --dbpas
 wp core install --allow-root --url=${WP_URL} --title=${WP_TITLE} --admin_user=${WP_ADMIN} --admin_password=${WP_ADMIN_PASSWD} --admin_email=${WP_ADMIN_EMAIL}
 
 exec "$@"
-
-

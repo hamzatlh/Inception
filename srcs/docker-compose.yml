@@ -6,66 +6,58 @@ services:
     build: ./requirements/mariadb
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - WP_DATABASE=${WP_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
-      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
-      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
-      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
-      - WORDPRESS_TABLE_PREFIX=${WORDPRESS_TABLE_PREFIX}
     volumes:
       - ./volumes/mariadb:/var/lib/mysql
-    env_file:
-      - .env
     networks:
       - wordpress
     ports:
       - 3306:3306
     restart: always
-    init: true
 
-  wordpress:
-    container_name: wordpress
-    build: ./requirements/wordpress
-    volumes:
-      - ./volumes/wordpress:/var/www/html/wordpress
-    env_file:
-      - .env
-    networks:
-      - wordpress
-    depends_on:
-      - mariadb
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
-      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
-      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
-      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
-      - WORDPRESS_TABLE_PREFIX=${WORDPRESS_TABLE_PREFIX}
-    ports:
-      - 9000:9000
-    restart: always
-    init: true
+  # wordpress:
+  #   container_name: wordpress
+  #   build: ./requirements/wordpress
+  #   volumes:
+  #     - ./volumes/wordpress:/var/www/html/wordpress
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - wordpress
+  #   depends_on:
+  #     - mariadb
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  #     - MYSQL_DATABASE=${MYSQL_DATABASE}
+  #     - MYSQL_USER=${MYSQL_USER}
+  #     - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+  #     - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+  #     - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+  #     - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+  #     - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+  #     - WORDPRESS_TABLE_PREFIX=${WORDPRESS_TABLE_PREFIX}
+  #   ports:
+  #     - 9000:9000
+  #   restart: always
+  #   init: true
 
-  nginx:
-    container_name: nginx
-    depends_on:
-      - wordpress
-    build: ./requirements/nginx
-    volumes:
-      - ./volumes/wordpress:/var/www/html/wordpress
-    env_file:
-      - .env
-    networks:
-      - wordpress
-    ports:
-      - 443:443
-    restart: always
-    init: true
+  # # nginx:
+  # #   container_name: nginx
+  # #   depends_on:
+  # #     - wordpress
+  # #   build: ./requirements/nginx
+  # #   volumes:
+  # #     - ./volumes/wordpress:/var/www/html/wordpress
+  # #   env_file:
+  # #     - .env
+  # #   networks:
+  # #     - wordpress
+  # #   ports:
+  # #     - 443:443
+  # #   restart: always
+  # #   init: true
 
 networks:
   wordpress:

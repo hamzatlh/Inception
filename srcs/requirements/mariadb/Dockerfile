@@ -1,18 +1,18 @@
 FROM debian:bookworm
 
-RUN apt-get update -y \
-    && apt-get upgrade -y \
-    && apt-get install -y mariadb-server && apt-get install -y mariadb-client
+RUN apt update && apt upgrade -y && apt install -y mariadb-server && apt install -y mariadb-client
 
-RUN mkdir -p /run/mysqld && chown mysql:mysql /run/mysqld && chmod 755 /run/mysqld
+RUN mkdir /var/run/mysqld; \
+chmod 777 /var/run/mysqld; \
+chown -R mysql:mysql /var/run/mysqld;
 
-COPY ./tools/script.sh /script.sh
+RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
-COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 EXPOSE 3306
 
-ENTRYPOINT ["sh", "/script.sh"]
-
-CMD ["mariadbd"]
-
+USER mysql
+COPY ./tools/script.sh /script.sh
+ENTRYPOINT ["sh", "script.sh"]
+CMD ["mariadb"]

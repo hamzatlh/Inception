@@ -5,7 +5,7 @@ services:
     container_name: mariadb
     build: ./requirements/mariadb
     env_file:
-      - ./.env
+      - .env
     # volumes:
     #   - ./volumes/mariadb:/var/lib/mysql
     networks:
@@ -20,7 +20,7 @@ services:
     # volumes:
     #   - ./volumes/wordpress:/var/www/html/wordpress
     env_file:
-      - ./.env
+      - .env
     networks:
       - wordpress
     depends_on:

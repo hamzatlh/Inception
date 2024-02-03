@@ -18,7 +18,7 @@ echo "Downloading wordpress ..."
 wp core download --allow-root
 
 echo "Creating wordpress config ..."
-wp config create --allow-root --dbname=${DATABASE_NAME} --dbuser=${DATABASE_USER} --dbpass=${DATABASE_ROOT_PASSWORD} --dbhost=${WP_HOST}
+wp config create --allow-root --dbname=${DATABASE_NAME} --dbuser=${DATABASE_USER} --dbpass=${DATABASE_ROOT_PASSWORD} --dbhost=mariadb
 
 echo "Installing wordpress ..."
 wp core install --allow-root --url=${WP_URL} --title=${WP_TITLE} --admin_user=${WP_ADMIN} --admin_password=${WP_ADMIN_PASSWD} --admin_email=${WP_ADMIN_EMAIL}

@@ -10,6 +10,11 @@ services:
     #   - ./volumes/mariadb:/var/lib/mysql
     networks:
       - wordpress
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
     ports:
       - 3306:3306
     restart: on-failure
@@ -21,6 +26,11 @@ services:
     #   - ./volumes/wordpress:/var/www/html/wordpress
     env_file:
       - .env
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_NAME: ${DATABASE_NAME}
+      WORDPRESS_DB_USER: ${DATABASE_USER}
+      WORDPRESS_DB_PASSWORD: ${DATABASE_ROOT_PASSWORD}
     networks:
       - wordpress
     depends_on:

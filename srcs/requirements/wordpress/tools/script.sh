@@ -1,9 +1,9 @@
 #!/bin/sh
 
 echo "Checking ..."
-# if [ ! -d "/var/www/html/wordpress" ]; then
-#     mkdir -p /var/www/html/wordpress
-# fi
+if [ ! -d "/var/www/html/wordpress" ]; then
+    mkdir -p /var/www/html/wordpress
+fi
 
 echo "<<< <<< Creating wordpress ..."
 cd /var/www/html/wordpress
@@ -24,5 +24,5 @@ echo "<<< <<< Installing wordpress ..."
 wp core install --allow-root --url=${WP_URL} --title=${WP_TITLE} --admin_user=${WP_ADMIN} --admin_password=${WP_ADMIN_PASSWD} --admin_email=${WP_ADMIN_EMAIL}
 
 echo "<<< <<< Creating user ..."
-wp user create "${WP_USER}" "${WP_EMAIL}" --user_pass="${WP_PASSWORD}" --role=author
+wp user create --allow-root "${WP_USER}" "${WP_EMAIL}" --user_pass="${WP_PASSWORD}" --role=author
 exec "$@"

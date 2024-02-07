@@ -2,13 +2,9 @@ FROM debian:bookworm
 
 RUN apt update && apt upgrade -y && apt install -y mariadb-server && apt install -y mariadb-client
 
-# RUN mkdir -p /var/lib/mysql; \
-#     chown -R mysql:mysql /var/lib/mysql
-
-
 RUN mkdir -p /var/run/mysqld && chmod 777 /var/run/mysqld
 
-# COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 EXPOSE 3306
 

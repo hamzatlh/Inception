@@ -6,69 +6,59 @@ services:
     build: ./requirements/mariadb
     env_file:
       - .env
-    # volumes:
-    #   - ./volumes/mariadb:/var/lib/mysql
+    volumes:
+      - mariadb:/var/lib/mysql/
     networks:
       - wordpress
-    environment:
-      MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_USER: ${DATABASE_USER}
-      MYSQL_PASSWORD: ${DATABASE_ROOT_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
-    ports:
-      - 3306:3306
+    expose:
+      - 3306
     restart: on-failure
 
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
-    # volumes:
-    #   - ./volumes/wordpress:/var/www/html/wordpress
+    volumes:
+      - wordpress:/var/www/html/wordpress
     env_file:
       - .env
-    environment:
-      WORDPRESS_DB_HOST: mariadb:3306
-      WORDPRESS_DB_NAME: ${DATABASE_NAME}
-      WORDPRESS_DB_USER: ${DATABASE_USER}
-      WORDPRESS_DB_PASSWORD: ${DATABASE_ROOT_PASSWORD}
     networks:
       - wordpress
     depends_on:
       - mariadb
-    ports:
-      - 9000:9000
+    expose:
+      - 9000
     restart: on-failure
 
-  # # nginx:
-  # #   container_name: nginx
-  # #   depends_on:
-  # #     - wordpress
-  # #   build: ./requirements/nginx
-  # #   volumes:
-  # #     - ./volumes/wordpress:/var/www/html/wordpress
-  # #   env_file:
-  # #     - .env
-  # #   networks:
-  # #     - wordpress
-  # #   ports:
-  # #     - 443:443
-  # #   restart: always
-  # #   init: true
+  nginx:
+    container_name: nginx
+    depends_on:
+      - wordpress
+    build: ./requirements/nginx
+    volumes:
+      - ./volumes/wordpress:/var/www/html/wordpress
+    env_file:
+      - .env
+    networks:
+      - wordpress
+    ports:
+      - 443:443
+    restart: always
+    init: true
 
 networks:
   wordpress:
     driver: bridge
 
-# volumes:
-#   wordpress:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       o: bind
-#       device: ${PWD}/wordpress
-#   mariadb:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       o: bind
-#       device: ${PWD}/mariadb
+volumes:
+  wordpress:
+    # driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hamza/data/wordpress
+  mariadb:
+    # driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hamza/data/mariadb

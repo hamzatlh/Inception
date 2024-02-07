@@ -1,32 +1,22 @@
-#!/bin/sh
+#!bin/sh
 
-# Check if MariaDB data directory exists
-if [ ! -d "/var/lib/mysql/test" ]; then
-    # Create a temporary SQL file
-    cat << EOF > /tmp/create_db.sql
-FLUSH PRIVILEGES;
+if [ ! -d "/var/lib/mysql/${DATABASE_NAME}" ]; then
+
+        cat << EOF > /tmp/db.sql
 USE mysql;
-DROP DATABASE IF EXISTS test;
+FLUSH PRIVILEGES;
+DELETE FROM mysql.user WHERE User='';
 DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-ALTER USER 'root'@'localhost' IDENTIFIED BY '';
-CREATE DATABASE test;
-CREATE USER 'test'@'%' IDENTIFIED BY '';
-GRANT ALL PRIVILEGES ON test.* TO 'test'@'%';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${DATABASE_ROOT_PASSWORD}';
+CREATE DATABASE ${DATABASE_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER '${DATABASE_USER}'@'%' IDENTIFIED by '${DATABASE_ROOT_PASSWORD}';
+GRANT ALL PRIVILEGES ON ${DATABASE_NAME}.* TO '${DATABASE_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
-
-    # Stop MariaDB server
-    service mariadb stop
-
-    # Bootstrap MariaDB with the SQL script
-    mariadbd --user=mysql --bootstrap < /tmp/create_db.sql
-
-    # Remove temporary SQL file
-    rm -f /tmp/create_db.sql
-
-    # Start MariaDB server
-    service mariadb start
+        mariadbd --user=mysql --bootstrap < /tmp/db.sql
+        rm -f /tmp/db.sql
+else
+        echo "Database already exists"
 fi
 
-# Execute the provided command (e.g., starting a shell)
 exec "$@"

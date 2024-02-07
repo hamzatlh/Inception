@@ -21,8 +21,8 @@ re: down
 clean: down
 	@printf "Cleaning configuration ${name}...\n"
 	@docker system prune -a
-	@sudo rm -rf ./srcs/volumes/wordpress/*
-	@sudo rm -rf ./srcs/volumes/mariadb/*
+	@sudo rm -rf /home/hamza/data/wordpress/*
+	@sudo rm -rf /home/hamza/data/mariadb/*
 
 fclean:
 	@printf "Total clean of all configurations docker\n"
@@ -30,7 +30,8 @@ fclean:
 	@docker system prune --all --force --volumes
 	@docker network prune --force
 	@docker volume prune --force
-	@sudo rm -rf ./srcs/volumes/wordpress/*
-	@sudo rm -rf ./srcs/volumes/mariadb/*
+	@docker volume rm $$(docker volume ls -qf dangling=true)
+	@sudo rm -rf /home/hamza/data/mariadb/*
+	@sudo rm -rf /home/hamza/data/wordpress/*
 
 .PHONY: all build down re clean fclean

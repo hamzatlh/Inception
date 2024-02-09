@@ -10,8 +10,8 @@ services:
       - mariadb:/var/lib/mysql/
     networks:
       - wordpress
-    expose:
-      - 3306
+    ports:
+      - 3306:3306
     restart: on-failure
 
   wordpress:
@@ -23,10 +23,10 @@ services:
       - .env
     networks:
       - wordpress
+    ports:
+      - 9000:9000
     depends_on:
       - mariadb
-    expose:
-      - 9000
     restart: on-failure
 
   nginx:
@@ -35,7 +35,7 @@ services:
       - wordpress
     build: ./requirements/nginx
     volumes:
-      - ./volumes/wordpress:/var/www/html/wordpress
+      - wordpress:/var/www/html/wordpress
     env_file:
       - .env
     networks:
@@ -47,18 +47,21 @@ services:
 
 networks:
   wordpress:
+    name: wordpress
     driver: bridge
 
 volumes:
   wordpress:
-    # driver: local
+    driver: local
     driver_opts:
       type: none
       o: bind
       device: /home/hamza/data/wordpress
+    name: wordpress
   mariadb:
-    # driver: local
+    driver: local
     driver_opts:
       type: none
       o: bind
       device: /home/hamza/data/mariadb
+    name: mariadb

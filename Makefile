@@ -2,8 +2,7 @@ name = Inception
 
 all:
 	@printf "Launch configuration ${name}...\n"
-	@bash srcs/requirements/wordpress/tools/script.sh
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
+	@docker-compose -f ./srcs/docker-compose.yml up -d
 
 build:
 	@printf "Building configuration ${name}...\n"

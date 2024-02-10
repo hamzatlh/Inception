@@ -14,10 +14,14 @@ RUN mkdir -p /var/www/html/wordpress \
 
 RUN mkdir -p /run/php
 
+RUN sed -i "s|listen = /run/php/php8.2-fpm.sock|listen = 0.0.0.0:9000|g" /etc/php/8.2/fpm/pool.d/www.conf
+
 COPY ./tools/script.sh /script.sh
 
 RUN chmod +x /script.sh
 
-ENTRYPOINT ["/script.sh"]
+EXPOSE 9000
 
-CMD ["/usr/sbin/php-fpm8.2", "-F"]
+ENTRYPOINT ["sh","script.sh"]
+
+CMD ["php-fpm8.2", "-R", "-F"]

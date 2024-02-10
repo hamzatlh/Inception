@@ -3,34 +3,37 @@ version: '3.8'
 services:
   mariadb:
     container_name: mariadb
+    image: s_mariadb
     build: ./requirements/mariadb
     env_file:
       - .env
     volumes:
       - mariadb:/var/lib/mysql/
     networks:
-      - wordpress
+      - inception
     ports:
       - 3306:3306
     restart: on-failure
 
   wordpress:
     container_name: wordpress
+    image: s_wordpress
     build: ./requirements/wordpress
     volumes:
       - wordpress:/var/www/html/wordpress
     env_file:
       - .env
     networks:
-      - wordpress
-    ports:
-      - 9000:9000
+      - inception
     depends_on:
       - mariadb
+    ports:
+      - 9000:9000
     restart: on-failure
 
   nginx:
     container_name: nginx
+    image: s_nginx
     depends_on:
       - wordpress
     build: ./requirements/nginx
@@ -39,29 +42,27 @@ services:
     env_file:
       - .env
     networks:
-      - wordpress
+      - inception
     ports:
       - 443:443
-    restart: always
+    restart: on-failure
     init: true
 
 networks:
-  wordpress:
-    name: wordpress
+  inception:
+    name: inception
     driver: bridge
 
 volumes:
   wordpress:
-    driver: local
     driver_opts:
       type: none
       o: bind
       device: /home/hamza/data/wordpress
-    name: wordpress
+    name: s_wordpress
   mariadb:
-    driver: local
     driver_opts:
       type: none
       o: bind
       device: /home/hamza/data/mariadb
-    name: mariadb
+    name: s_mariadb

@@ -1,7 +1,6 @@
 #!bin/sh
 
 if [ ! -d "/var/lib/mysql/${DATABASE_NAME}" ]; then
-
         cat << EOF > /tmp/db.sql
 FLUSH PRIVILEGES;
 DELETE FROM mysql.user WHERE User='';

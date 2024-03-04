@@ -1,27 +1,19 @@
-name = Inception
+NAME = inception
+
+prepare:
+	@mkdir -p /home/hamza/data/wordpress
+	@mkdir -p /home/hamza/data/mariadb
 
 all:
-	@printf "Launch configuration ${name}...\n"
-	@docker-compose -f ./srcs/docker-compose.yml up -d
-
-build:
-	@printf "Building configuration ${name}...\n"
-	@bash srcs/requirements/wordpress/tools/script.sh
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
-
-down:
-	@printf "Stopping configuration ${name}...\n"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
-
-re: down
-	@printf "Rebuild configuration ${name}...\n"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+	@printf "Launch configuration ${NAME}...\n"
+	$(prepare)
+	@docker-compose -p $(NAME) -f srcs/docker-compose.yml up --build -d
 
 clean: down
-	@printf "Cleaning configuration ${name}...\n"
+	@printf "Cleaning configuration ${NAME}...\n"  # Fixed this line
+	docker-compose -p $(NAME) -f srcs/docker-compose.yml down
 	@docker system prune -a
-	@sudo rm -rf /home/hamza/data/wordpress/*
-	@sudo rm -rf /home/hamza/data/mariadb/*
+	@sudo rm -rf /home/hamza/data/*
 
 fclean:
 	@printf "Total clean of all configurations docker\n"
@@ -29,8 +21,8 @@ fclean:
 	@docker system prune --all --force --volumes
 	@docker network prune --force
 	@docker volume prune --force
-	@docker volume rm $$(docker volume ls -qf dangling=true)
-	@sudo rm -rf /home/hamza/data/mariadb/*
-	@sudo rm -rf /home/hamza/data/wordpress/*
+	@sudo rm -rf /home/hamza/data/*
 
-.PHONY: all build down re clean fclean
+re: fclean all
+ 
+.PHONY: all clean down re fclean

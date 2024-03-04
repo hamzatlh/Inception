@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mariadb:
     container_name: mariadb
-    image: s_mariadb
+    image: mariadb
     build: ./requirements/mariadb
     env_file:
       - .env
@@ -17,7 +17,7 @@ services:
 
   wordpress:
     container_name: wordpress
-    image: s_wordpress
+    image: wordpress
     build: ./requirements/wordpress
     volumes:
       - wordpress:/var/www/html/wordpress
@@ -33,7 +33,7 @@ services:
 
   nginx:
     container_name: nginx
-    image: s_nginx
+    image: nginx
     depends_on:
       - wordpress
     build: ./requirements/nginx
@@ -59,10 +59,10 @@ volumes:
       type: none
       o: bind
       device: /home/hamza/data/wordpress
-    name: s_wordpress
+    name: wordpress
   mariadb:
     driver_opts:
       type: none
       o: bind
       device: /home/hamza/data/mariadb
-    name: s_mariadb
+    name: mariadb

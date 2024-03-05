@@ -127,3 +127,4 @@ Docker Compose is a powerful tool that simplifies the management of multi-contai
 The ENTRYPOINT specifies a command that will always be executed when the container starts.
 
 The CMD specifies arguments that will be fed to the ENTRYPOINT.
+fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;

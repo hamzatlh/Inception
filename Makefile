@@ -4,14 +4,13 @@ prepare:
 	@mkdir -p /home/hamza/data/wordpress
 	@mkdir -p /home/hamza/data/mariadb
 
-all:
+all: prepare
 	@printf "Launch configuration ${NAME}...\n"
-	$(prepare)
 	@docker-compose -p $(NAME) -f srcs/docker-compose.yml up --build -d
 
 clean: down
-	@printf "Cleaning configuration ${NAME}...\n"  # Fixed this line
-	docker-compose -p $(NAME) -f srcs/docker-compose.yml down
+	@printf "Cleaning configuration ${NAME}...\n"
+	@docker-compose -p $(NAME) -f srcs/docker-compose.yml down
 	@docker system prune -a
 	@sudo rm -rf /home/hamza/data
 
@@ -25,5 +24,5 @@ fclean:
 	@sudo rm -rf /home/hamza/data --force
 
 re: fclean all
- 
+
 .PHONY: all clean down re fclean

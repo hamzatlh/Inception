@@ -119,3 +119,11 @@ Docker Compose is a powerful tool that simplifies the management of multi-contai
 7. Environment Configuration:
 
     Docker Compose supports environment-specific configuration using .env files. You can store environment-specific variables in these files and reference them in your docker-compose.yml.
+
+
+
+
+
+The ENTRYPOINT specifies a command that will always be executed when the container starts.
+
+The CMD specifies arguments that will be fed to the ENTRYPOINT.

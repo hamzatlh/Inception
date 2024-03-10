@@ -1,12 +1,12 @@
 NAME = inception
 
-prepare:
-	@mkdir -p /home/hamza/data/wordpress
-	@mkdir -p /home/hamza/data/mariadb
-
 all: prepare
 	@printf "Launch configuration ${NAME}...\n"
 	@docker-compose -p $(NAME) -f srcs/docker-compose.yml up --build -d
+
+prepare:
+	@mkdir -p /home/hamza/data/wordpress
+	@mkdir -p /home/hamza/data/mariadb
 
 clean: down
 	@printf "Cleaning configuration ${NAME}...\n"
@@ -25,4 +25,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all clean down re fclean
+.PHONY: all prepare clean down re fclean

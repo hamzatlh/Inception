@@ -5,8 +5,7 @@ RUN apt update && apt upgrade -y && apt install -y php8.2 \
     php8.2-mysql \
     mariadb-client \
     mariadb-server \
-    curl \ 
-    sendmail
+    curl
 
 RUN mkdir -p /var/www/html/wordpress \
     && chown -R www-data:www-data /var/www/html \

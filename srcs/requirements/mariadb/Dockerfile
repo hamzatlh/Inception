@@ -1,6 +1,6 @@
 FROM debian:bookworm
 
-RUN apt update && apt upgrade -y && apt install -y mariadb-server
+RUN apt update && apt install -y mariadb-server
 
 RUN mkdir -p /var/run/mysqld && chmod 777 /var/run/mysqld
 

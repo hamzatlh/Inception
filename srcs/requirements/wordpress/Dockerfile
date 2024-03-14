@@ -1,6 +1,6 @@
 FROM debian:bookworm
 
-RUN apt update && apt upgrade -y && apt install -y php8.2 \
+RUN apt update && apt install -y php8.2 \
     php8.2-fpm \
     php8.2-mysql \
     mariadb-client \

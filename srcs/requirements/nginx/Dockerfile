@@ -1,6 +1,6 @@
 FROM debian:bookworm
 
-RUN apt update && apt upgrade -y && apt install nginx -y
+RUN apt update && apt install nginx -y
 
 RUN apt install -y openssl
 
